@@ -17,19 +17,22 @@
       .ranking {
           width: 25px;
       }
+      .main-toolbar{
+        background-color: #00693A;
+      }
     </style>
   </head>
   
   <body>
     <div ng-controller="timesCtrl" ng-cloak="" ng-app="BlankApp" >
         <md-toolbar layout="row" class="md-hue-3">
-          <div class="md-toolbar-tools">
-            <span>Normal</span>
+          <div class="md-toolbar-tools  main-toolbar" layout-align="center center">
+            <img src="/static/img/logo_pad.png" alt="">
           </div>
         </md-toolbar>
 
         <div layout="row" layout-align="center center">
-          <md-list flex="50"> 
+          <md-list flex="50" flex-sm="100" flex-xs="100" class="md-dense"> 
             <div ng-repeat="time in times">
               <md-list-item class="md-3-line" ng-click="null">
                 <span class="ranking" ng-style="getStyle($index)">{[$index+1]}</span>

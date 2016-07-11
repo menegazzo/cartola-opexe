@@ -9,7 +9,7 @@ import config
 
 
 class TeamsAPIView(MethodView):
-    
+
     def _get_league_info(self, page=1):
         return requests.get(
             'https://api.cartolafc.globo.com/auth/liga/opexe-xampios-legue?page={}'.format(page),
