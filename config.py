@@ -10,4 +10,5 @@ ITEMS_PER_PAGE = 20
 statuses = {
     1: 'Mercado aberto',
     2: 'Mercado fechado',
+    3: 'Mercado em atualização',
 }
