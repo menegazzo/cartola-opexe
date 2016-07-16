@@ -8,6 +8,14 @@ import requests
 import config
 
 
+class StatusAPIView(MethodView):
+
+    def get(self):
+        result = requests.get('https://api.cartolafc.globo.com/mercado/status').json()
+        status = result['status_mercado']
+        return jsonify({'open': status == 1})
+
+
 class TeamsAPIView(MethodView):
 
     def _get_league_info(self, page=1):
@@ -47,10 +55,11 @@ class PartialsAPIView(MethodView):
             lambda player_id: partials.get(str(player_id), {}).get('pontuacao'),
             players,
         )
-
-        total = sum(filter(lambda x: x or 0, partials))
-
+        
+        played = filter(None, partials)
+        
         result = dict(zip(players, partials))
-        result['total'] = total
+        result['jogaram'] = '{}/12'.format(len(played))
+        result['total'] = sum(played)
 
         return jsonify(result)
