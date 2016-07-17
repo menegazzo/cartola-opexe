@@ -4,7 +4,7 @@ from flask import Flask
 from flask.templating import render_template
 
 import config
-from views import TeamsAPIView, PartialsAPIView
+from views import TeamsAPIView, PartialsAPIView, StatusAPIView
 
 
 logging.basicConfig(
@@ -26,9 +26,11 @@ app.config.from_object(config)
 def index():
     return render_template('index.html')
 
+status_view = StatusAPIView.as_view('status')
 teams_view = TeamsAPIView.as_view('times')
 partials_view = PartialsAPIView.as_view('parciais')
 
+app.add_url_rule('/status/', view_func=status_view, methods=['GET'])
 app.add_url_rule('/times/', defaults={'slug': None}, view_func=teams_view, methods=['GET'])
 app.add_url_rule('/times/<string:slug>/', view_func=teams_view, methods=['GET'])
 app.add_url_rule('/times/<string:slug>/parciais/', view_func=partials_view, methods=['GET'])
