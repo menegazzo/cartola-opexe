@@ -1,0 +1,22 @@
+{
+  "name": "cartola",
+  "homepage": "https://github.com/menegazzo/cartola-opexe",
+  "authors": [
+    "Fabio Menegazzo <menegazzo@gmail.com>",
+    "João André <joaoandre.ja@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "static/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-loading-bar": "^0.9.0"
+  }
+}

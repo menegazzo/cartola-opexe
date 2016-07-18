@@ -1,8 +1,9 @@
-var app = angular.module("BlankApp", ["ngMaterial"]);
+var app = angular.module("BlankApp", ["ngMaterial", "angular-loading-bar"]);
 
-app.config(["$interpolateProvider", function ($interpolateProvider) {
+app.config(["$interpolateProvider", "cfpLoadingBarProvider", function ($interpolateProvider, cfpLoadingBarProvider) {
   $interpolateProvider.startSymbol("{[");
   $interpolateProvider.endSymbol("]}");
+  cfpLoadingBarProvider.includeSpinner = false;
 }]);
 
 app.controller("timesCtrl", ["$scope", "$http", "$q", function($scope, $http, $q) {
@@ -10,6 +11,7 @@ app.controller("timesCtrl", ["$scope", "$http", "$q", function($scope, $http, $q
   $scope.orderBy = undefined;
   $scope.open = 0;
   $scope.times = [];
+  $scope.loaded = false;
   
   $scope.getStyle = function (index) {
     // Prize zone
@@ -43,6 +45,7 @@ app.controller("timesCtrl", ["$scope", "$http", "$q", function($scope, $http, $q
   
   var partialsPromise = $q.when(teamsPromise, function () {
     if ($scope.open === true) {
+      $scope.loaded = true;
       return $q.reject("Mercado aberto");
     }
     
@@ -62,6 +65,7 @@ app.controller("timesCtrl", ["$scope", "$http", "$q", function($scope, $http, $q
       time["jogaram"] = parcial.data["jogaram"];
     });
     $scope.orderBy = "-pontos.parcial";
+    $scope.loaded = true;
   });
 
 }]);
