@@ -1,0 +1,24 @@
+md-list-item, md-list-item .md-list-item-inner {
+  min-height: 88px !important;
+  height: 90px !important;
+}
+.md-button {
+  line-height: 15px !important;
+}
+.ranking, .parcial, .campeonato {
+  font-size: small;
+  font-weight: bold;
+  margin-right: 10px;
+  text-align: center;
+  width: 55px;
+}
+.ranking {
+  width: 10px;
+}
+.extra {
+  font-size: xx-small;
+  font-weight: normal;
+}
+.main-toolbar{
+  background-color: #00693A;
+}
