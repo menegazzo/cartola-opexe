@@ -1,36 +1,11 @@
 <html lang="en" >
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Angular Material style sheet -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
-    <style type="text/css">
-      md-list-item, md-list-item .md-list-item-inner {
-        min-height: 88px !important;
-        height: 90px !important;
-      }
-      .md-button {
-        line-height: 15px !important;
-      }
-      .ranking, .parcial, .campeonato {
-        font-size: small;
-        font-weight: bold;
-        margin-right: 10px;
-        text-align: center;
-        width: 55px;
-      }
-      .ranking {
-        width: 10px;
-      }
-      .extra {
-        font-size: xx-small;
-        font-weight: normal;
-      }
-      .main-toolbar{
-        background-color: #00693A;
-      }
-    </style>
+    <link rel="stylesheet" href="static/components/angular-loading-bar/build/loading-bar.min.css">
+    <link rel="stylesheet" href="static/css/app.css">
   </head>
-  
+
   <body>
     <div ng-controller="timesCtrl" ng-cloak="" ng-app="BlankApp" >
         <md-toolbar layout="row" class="md-hue-3">
@@ -40,13 +15,17 @@
         </md-toolbar>
 
         <div layout="row" layout-align="center center">
-          <md-list flex="50" flex-sm="100" flex-xs="100" class="md-dense"> 
+          <div ng-show="!loaded" layout="column" layout-align="space-around center center" layout-fill>
+            <md-progress-circular id="circular-bar" md-mode="indeterminate"></md-progress-circular>
+          </div>
+          <md-list ng-show='loaded' flex="50" flex-sm="100" flex-xs="100" class="md-dense"> 
             <div ng-repeat="time in times | orderBy:orderBy">
               <md-list-item class="md-3-line" ng-click="null">
                 <span class="ranking" ng-style="getStyle($index)">{[$index+1]}</span>
                 <img ng-src="{[time.url_escudo_png]}?{[$index]}" class="md-avatar" alt="{[time.nome]}">
                 <div class="md-list-item-text" layout="column">
-                  <h3 ng-style="getStyle($index)">{[ time.nome ]}</h3>
+                  <h3 hide-xs show-gt-xs ng-style="getStyle($index)">{[ time.nome ]}</h3>
+                  <h3 show-xs hide-gt-xs ng-style="getStyle($index)">{[ time.nome | limitTo: 17 ]}{[ time.nome.length > 17 ? "..." : "" ]}</h3>
                   <h4 ng-style="getStyle($index)">{[ time.nome_cartola ]}</h4>
                   <span class="parcial md-secondary" ng-if="!open">
                     <span>{[ time.pontos.parcial | number:2 ]}</span><br>
@@ -67,83 +46,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
-
-    <!-- Angular Material Library -->
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
-    
-    <!-- Your application bootstrap  -->
-    <script type="text/javascript">    
-      /**
-       * You must include the dependency on "ngMaterial" 
-       */
-      var app = angular.module("BlankApp", ["ngMaterial"]);
-      
-      app.config(["$interpolateProvider", function ($interpolateProvider) {
-        $interpolateProvider.startSymbol("{[");
-        $interpolateProvider.endSymbol("]}");
-      }]);
-      
-      app.controller("timesCtrl", ["$scope", "$http", "$filter", "$q", function($scope, $http, $filter, $q) {
+    <script src="static/components/angular-loading-bar/build/loading-bar.min.js"></script>
+    <script src="static/js/app.js"></script>
 
-        $scope.orderBy = undefined;
-        $scope.open = 0;
-        $scope.times = [];
-        
-        $scope.getStyle = function (index) {
-          // Prize zone
-          if (index < 3) {
-            return {"color": "blue"};
-          }
-          
-          // Barbecue zone
-          if (index >= $scope.times.length - 4) {
-            return {"color": "red"};
-          }
-          
-          // Michel"s bitches zone
-          var times = $scope.times.map(function (item, index) {
-            return item["time_id"];
-          });
-          if (index > times.indexOf(3438309)) {
-            return {"color": "orange"};
-          }
-        };
-
-        var statusPromise = $http.get("/status/").then(function (status) {
-          $scope.open = status.data["open"];
-        });
-        
-        var teamsPromise = $q.when(statusPromise, function () {
-          return $http.get("/times/").then(function (times) {
-            $scope.times = times.data;
-          });
-        });
-        
-        var partialsPromise = $q.when(teamsPromise, function () {
-          if ($scope.open === true) {
-            return $q.reject("Mercado aberto");
-          }
-          
-          var promises = [];
-          angular.forEach($scope.times, function (time) {
-            promises.push($http.get("/times/" + time["slug"] + "/parciais/"));
-          });
-          return $q.all(promises);
-        });
-        
-        $q.when(partialsPromise, function (parciais) {
-          angular.forEach(parciais, function (parcial, index) {
-            var time = $scope.times[index];
-            var parcial_total = parcial.data["total"];
-            time["pontos"]["parcial"] = parcial_total;
-            time["pontos"]["campeonato"] += parcial_total;
-            time["jogaram"] = parcial.data["jogaram"];
-          });
-          $scope.orderBy = "-pontos.parcial";
-        });
-
-      }]);
-    </script>
-    
   </body>
 </html>

@@ -1,0 +1,44 @@
+md-list-item, md-list-item .md-list-item-inner {
+  min-height: 88px !important;
+  height: 90px !important;
+}
+.md-button {
+  line-height: 15px !important;
+}
+.ranking, .parcial, .campeonato {
+  font-size: small;
+  font-weight: bold;
+  margin-right: 10px;
+  text-align: center;
+  width: 55px;
+}
+.ranking {
+  width: 10px;
+}
+.extra {
+  font-size: xx-small;
+  font-weight: normal;
+}
+.main-toolbar{
+  background-color: #00693A;
+}
+
+#loading-bar .bar {
+  background: #106cc8;
+}
+#loading-bar-spinner .spinner-icon {
+  border-top-color:  #106cc8;
+  border-left-color: #106cc8;
+}
+#loading-bar .peg {
+  -moz-box-shadow: #106cc8 1px 0 6px 1px;
+  -ms-box-shadow: #106cc8 1px 0 6px 1px;
+  -webkit-box-shadow: #106cc8 1px 0 6px 1px;
+  box-shadow: #106cc8 1px 0 6px 1px;
+}
+
+.loading-spinner {
+  -webkit-animation:spin 1s linear infinite;
+  -moz-animation:spin 1s linear infinite;
+  animation:spin 1s linear infinite;
+}
